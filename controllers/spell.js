@@ -1,8 +1,14 @@
 var Spell = require('../models/spell');
 
 // List of all Spells
-exports.spell_list = function(req, res) {
-    res.send('NOT IMPLEMENTED: Spell list');
+exports.spell_list = async function(req, res) {
+    try {
+        const spells = await Spell.find();
+        res.send(spells);
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
 };
 
 // For a specific Spell
