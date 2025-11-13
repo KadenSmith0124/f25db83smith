@@ -68,6 +68,7 @@ if (reseed) {recreateDB();}
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var spellsRouter = require('./routes/spells');
 var resourceRouter = require('./routes/resource');
 
 var app = express();
@@ -84,6 +85,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/spells', spellsRouter);
 app.use('/resource', resourceRouter);
 
 // catch 404 and forward to error handler

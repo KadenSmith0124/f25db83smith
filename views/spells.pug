@@ -1,0 +1,21 @@
+extends layout
+
+block content
+  h1= title
+
+  .container-fluid
+    .row
+      each spell in results
+        .col-sm-2
+          p
+            strong Name:
+            |  #{spell.name}
+          p
+            strong Level:
+            |  #{spell.level}
+          p
+            strong School:
+            |  #{spell.school}
+          p
+            strong Description:
+            |  #{spell.description}

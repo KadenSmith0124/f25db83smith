@@ -30,3 +30,16 @@ exports.spell_delete = function(req, res) {
 exports.spell_update_put = function(req, res) {
     res.send('NOT IMPLEMENTED: Spell update PUT ' + req.params.id);
 };
+
+// VIEWS
+// Handle a show-all view
+exports.spell_view_all_Page = async function(req, res) {
+    try {
+        const allSpells = await Spell.find();
+        res.render('spells', { title: 'Spell Search Results', results: allSpells });
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
+};
+
