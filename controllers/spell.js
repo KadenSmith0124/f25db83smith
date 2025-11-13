@@ -16,9 +16,26 @@ exports.spell_detail = function(req, res) {
     res.send('NOT IMPLEMENTED: Spell detail: ' + req.params.id);
 };
 
-// Handle Spell create on POST
-exports.spell_create_post = function(req, res) {
-    res.send('NOT IMPLEMENTED: Spell create POST');
+// Handle Spell create on POST.
+exports.spell_create_post = async function(req, res) {
+    console.log(req.body)
+    let document = new Spell();
+
+    // We expect the POST body to contain JSON like:
+    // {"name":"Firebolt","level":0,"school":"Evocation","description":"A bolt of fire."}
+
+    document.name = req.body.name;
+    document.level = req.body.level;
+    document.school = req.body.school;
+    document.description = req.body.description;
+
+    try {
+        let result = await document.save();
+        res.send(result);
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
 };
 
 // Handle Spell delete on DELETE
