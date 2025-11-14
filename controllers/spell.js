@@ -11,9 +11,16 @@ exports.spell_list = async function(req, res) {
     }
 };
 
-// For a specific Spell
-exports.spell_detail = function(req, res) {
-    res.send('NOT IMPLEMENTED: Spell detail: ' + req.params.id);
+// for a specific Spell.
+exports.spell_detail = async function(req, res) {
+    console.log("detail " + req.params.id);
+    try {
+        let result = await Spell.findById(req.params.id);
+        res.send(result);
+    } catch (error) {
+        res.status(500);
+        res.send(`{"error": document for id ${req.params.id} not found}`);
+    }
 };
 
 // Handle Spell create on POST.
@@ -43,9 +50,33 @@ exports.spell_delete = function(req, res) {
     res.send('NOT IMPLEMENTED: Spell delete DELETE ' + req.params.id);
 };
 
-// Handle Spell update on PUT
-exports.spell_update_put = function(req, res) {
-    res.send('NOT IMPLEMENTED: Spell update PUT ' + req.params.id);
+// Handle Spell update on PUT.
+exports.spell_update_put = async function(req, res) {
+    console.log(`update on id ${req.params.id}`)
+
+    try {
+        let toUpdate = await Spell.findById(req.params.id);
+
+        // Do checks for existence
+        if (!toUpdate) {
+            res.status(404);
+            res.send(`{"error":"Spell with id ${req.params.id} not found"}`);
+            return;
+        }
+
+        // Update fields only if provided in body
+        if (req.body.name) toUpdate.name = req.body.name;
+        if (req.body.level) toUpdate.level = req.body.level;
+        if (req.body.school) toUpdate.school = req.body.school;
+        if (req.body.description) toUpdate.description = req.body.description;
+
+        let result = await toUpdate.save();
+        res.send(result);
+
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": ${err}}`);
+    }
 };
 
 // VIEWS
