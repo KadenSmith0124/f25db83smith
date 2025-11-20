@@ -124,6 +124,19 @@ exports.spell_update_Page = async function(req, res) {
     }
 };
 
+// Handle building the view for deleting a Spell.
+// Query parameter provides the id (?id=...).
+exports.spell_delete_Page = async function(req, res) {
+    console.log("delete view for id " + req.query.id);
+    try {
+        let result = await Spell.findById(req.query.id);
+        res.render('spelldelete', { title: 'Spell Delete', toShow: result });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
 // VIEWS
 // Handle a show-all view
 exports.spell_view_all_Page = async function(req, res) {

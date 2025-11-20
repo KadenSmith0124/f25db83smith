@@ -1,0 +1,64 @@
+extends layout
+
+block content
+  h1= title
+
+  // If no spell returned
+  if !toShow
+    h3 Spell not found.
+    a(href="/spells") Return to list
+
+  else
+    // Extract spell fields
+    - let spellid = toShow._id
+    - let name = toShow.name
+    - let level = toShow.level
+    - let school = toShow.school
+    - let description = toShow.description
+
+    // Display spell fields
+    div.row
+      div(class='spellAttr mr-3') Spell ID:
+      div #{spellid}
+
+    div.row
+      div(class='spellAttr mr-3') Name:
+      div #{name}
+
+    div.row
+      div(class='spellAttr mr-3') Level:
+      div #{level}
+
+    div.row
+      div(class='spellAttr mr-3') School:
+      div #{school}
+
+    div.row
+      div(class='spellAttr mr-3') Description:
+      div #{description}
+
+    hr
+
+    // Action buttons
+    button#deleteButton.btn.btn-danger Delete
+    button#cancelButton.btn.btn-secondary.ml-2 Cancel
+
+    // Client-side script for DELETE and CANCEL actions
+    script.
+      // DELETE button handler
+      document.getElementById('deleteButton').addEventListener('click', () => {
+        fetch(`/resource/spells/#{spellid}`, { method: 'DELETE' })
+          .then(response => response.json())
+          .then(body => {
+            alert("Delete succeeded");
+            window.location.href = "/spells";  // Redirect back to list
+          })
+          .catch(error => {
+            alert("Delete failed: " + error);
+          });
+      });
+
+      // CANCEL button handler
+      document.getElementById('cancelButton').addEventListener('click', () => {
+        window.location.href = "/spells";
+      });

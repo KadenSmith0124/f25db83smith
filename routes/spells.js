@@ -10,5 +10,7 @@ router.get('/detail', spell_controllers.spell_view_one_Page);
 router.get('/create', spell_controllers.spell_create_Page);
 /* GET Spell update page */
 router.get('/update', spell_controllers.spell_update_Page);
+/* GET Spell delete page */
+router.get('/delete', spell_controllers.spell_delete_Page);
 
 module.exports = router;
