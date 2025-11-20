@@ -99,6 +99,31 @@ exports.spell_view_one_Page = async function(req, res) {
     }
 };
 
+// Handle building the view for creating a Spell.
+// No body, no id, no query. Just render the page.
+exports.spell_create_Page = function(req, res) {
+    console.log("create view");
+    try {
+        res.render('spellcreate', { title: 'Spell Create' });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
+// Handle building the view for updating a Spell.
+// query provides ?id=<id>
+exports.spell_update_Page = async function(req, res) {
+    console.log("update view for item " + req.query.id);
+    try {
+        let result = await Spell.findById(req.query.id);
+        res.render('spellupdate', { title: 'Spell Update', toShow: result });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
+    }
+};
+
 // VIEWS
 // Handle a show-all view
 exports.spell_view_all_Page = async function(req, res) {

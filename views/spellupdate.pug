@@ -1,0 +1,49 @@
+extends layout
+block content
+  h1= title
+
+  - let spellid = toShow._id
+  - let name = toShow.name
+  - let level = toShow.level
+  - let school = toShow.school
+  - let description = toShow.description
+
+  div.row(class='mb-2')
+    div.mr-1 ID:
+    div #{spellid}
+
+  - let actionid = "/resource/spells/" + spellid
+
+  form(id='SpellForm', action=actionid, method="PUT")
+    div.form-group
+      label.spellAttr(for='name') Name
+      input#name(type='text', name='name', value=name)
+
+    div.form-group
+      label.spellAttr(for='level') Level
+      input#level(type='number', name='level', value=level)
+
+    div.form-group
+      label.spellAttr(for='school') School
+      input#school(type='text', name='school', value=school)
+
+    div.form-group
+      label.spellAttr(for='description') Description
+      input#description(type='text', name='description', value=description)
+
+    input(type="submit")
+
+  script.
+    document.forms['SpellForm'].addEventListener('submit', (event) => {
+      event.preventDefault();
+      fetch(event.target.action, {
+        method: 'PUT',
+        body: new URLSearchParams(new FormData(event.target))
+      }).then((resp) => {
+        return resp.json();
+      }).then((body) => {
+        alert("Update succeeded");
+      }).catch((error) => {
+        alert("Update failed " + error);
+      });
+    });
