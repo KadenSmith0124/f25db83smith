@@ -45,9 +45,17 @@ exports.spell_create_post = async function(req, res) {
     }
 };
 
-// Handle Spell delete on DELETE
-exports.spell_delete = function(req, res) {
-    res.send('NOT IMPLEMENTED: Spell delete DELETE ' + req.params.id);
+// Handle Spell delete on DELETE.
+exports.spell_delete = async function(req, res) {
+    console.log("delete " + req.params.id);
+    try {
+        let result = await Spell.findByIdAndDelete(req.params.id);
+        console.log("Removed " + result);
+        res.send(result);
+    } catch (err) {
+        res.status(500);
+        res.send(`{"error": "Error deleting ${err}"}`);
+    }
 };
 
 // Handle Spell update on PUT.
@@ -76,6 +84,18 @@ exports.spell_update_put = async function(req, res) {
     } catch (err) {
         res.status(500);
         res.send(`{"error": ${err}}`);
+    }
+};
+
+// Handle a show one view with id specified by query
+exports.spell_view_one_Page = async function(req, res) {
+    console.log("single view for id " + req.query.id);
+    try {
+        let result = await Spell.findById(req.query.id);
+        res.render('spelldetail', { title: 'Spell Detail', toShow: result });
+    } catch (err) {
+        res.status(500);
+        res.send(`{'error': '${err}'}`);
     }
 };
 
