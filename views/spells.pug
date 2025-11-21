@@ -3,19 +3,23 @@ extends layout
 block content
   h1= title
 
-  .container-fluid
-    .row
-      each spell in results
-        .col-sm-2
-          p
-            strong Name:
-            |  #{spell.name}
-          p
-            strong Level:
-            |  #{spell.level}
-          p
-            strong School:
-            |  #{spell.school}
-          p
-            strong Description:
-            |  #{spell.description}
+  // Use results passed in from controller
+  - let items = results;
+
+  div(class="container-fluid")
+    div(class="row m-1")
+      each item in items
+        div(class="row-sm-2 m-1")
+          // Display spell info
+          | Spell #{item.name} (Level #{item.level}) – #{item.school}
+
+          // Build the update page URL using item._id
+          - let destination = `dispatch(\"/spells/update?id=${item._id}\")`
+
+          // Update button
+          button.btn.btn-primary.ml-2(onclick=destination) Update
+
+  script.
+    function dispatch(path) {
+      window.location.href = path;
+    }
