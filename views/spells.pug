@@ -3,6 +3,10 @@ extends layout
 block content
   h1= title
 
+  // Create New Spell button (Part 6 Step 1)
+  a(href="/spells/create")
+    button.btn.btn-success.m-2 Create New Spell
+
   // Use results passed in from controller
   - let items = results;
 
@@ -13,11 +17,17 @@ block content
           // Display spell info
           | Spell #{item.name} (Level #{item.level}) – #{item.school}
 
-          // Build the update page URL using item._id
-          - let destination = `dispatch(\"/spells/update?id=${item._id}\")`
+          // ---- DETAILS BUTTON ----
+          - let detailsUrl = `dispatch("/spells/detail?id=${item._id}")`
+          button.btn.btn-info.ml-2(onclick=detailsUrl) Details
 
-          // Update button
-          button.btn.btn-primary.ml-2(onclick=destination) Update
+          // ---- UPDATE BUTTON ----
+          - let updateUrl = `dispatch("/spells/update?id=${item._id}")`
+          button.btn.btn-warning.ml-2(onclick=updateUrl) Update
+
+          // ---- DELETE BUTTON ----
+          - let deleteUrl = `dispatch("/spells/delete?id=${item._id}")`
+          button.btn.btn-danger.ml-2(onclick=deleteUrl) Delete
 
   script.
     function dispatch(path) {
