@@ -2,7 +2,11 @@ const mongoose = require("mongoose")
 
 const spellSchema = mongoose.Schema({
     name: String,
-    level: Number,
+    level: {
+        type: Number,
+        min: 0,
+        max: 9
+    },
     school: String,
     description: String
 })
